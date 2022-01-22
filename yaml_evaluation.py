@@ -1,5 +1,7 @@
 import yaml
 import os
+import matplotlib.pyplot as plt
+import numpy as np
 
 class Algorithm:
 	def __init__(self, name):
@@ -16,6 +18,12 @@ class Algorithm:
 		self.list_cooptimal_solutions = []
 		self.list_absolute_processing_time = []
 		self.list_average_recognition_time = []
+		
+	def absolut_processing_time(self):
+		return sum(self.list_absolute_processing_time)
+	
+	def cooptimal_solutions(self):
+		
 		
 	def add_percentage_of_common_triples(self, percetage_of_common_triples):
 		self.list_percentage_of_common_triples.append(percetage_of_common_triples)
@@ -64,7 +72,7 @@ class Algorithm:
 
 algorithm_list = []
 
-directory = os.path.join('results', 'benchmark')
+directory = os.path.join('benchmark')
 for file in os.listdir(directory):
 	with open(os.path.join(directory, file)) as yaml_file:
 		try:
@@ -126,7 +134,15 @@ for file in os.listdir(directory):
 		except yaml.YAMLError as exc:
 			print(exc)
 			
-print(algorithm_list)
+a = ('Base', 'Realistic-3', 'Realistic-4', 'Reserve-3', 'Reserve-4', 'Spike')
+y_pos = np.arange(len(a))
+value = []
+for algorithm in algorithm_list:
+	value.append(algorithm.absolut_processing_time())
+error = np.random.rand(len(a))
+plt.bar(a, value)
+plt.ylabel("Absolute processing time in s")
+plt.show()
 
 
 
