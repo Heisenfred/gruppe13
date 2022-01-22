@@ -1,0 +1,16 @@
+Absolute processing time: 239.15385723114014
+Algorithm: reserve-3
+Amount of path distribution:
+  0: 2
+  1: 4209
+  2: 15789
+Average random green path 4 leaf matching: 0.54395
+Average recognition time: 0.011957692861557007
+Co-optimal solutions average: 0.9848
+Dataset size: 6
+Generate circular: true
+Generate clockwise: true
+Percentage 4 leaf matching: 54.7 %
+Percentage of classified R-Maps: 99.99 %
+Percentage of common triples: 88.9925%
+Percentage of failed recognitions: 0.01%
