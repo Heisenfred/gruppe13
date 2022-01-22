@@ -26,15 +26,4 @@ config_sets:
     n: 6
     circular: true
     clockwise: true
-  - set_name: small_noncircular_clockwise
-    n: 6
-    circular: false
-    clockwise: true
-  - set_name: small_noncircular_nonclockwise
-    n: 6
-    circular: false
-    clockwise: false
-  - set_name: small_circular_nonclockwise
-    n: 6
-    circular: true
-    clockwise: false
+
