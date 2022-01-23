@@ -1,11 +1,14 @@
 import yaml
 import os
 import matplotlib.pyplot as plt
+from matplotlib.ticker import FormatStrFormatter, StrMethodFormatter
 import numpy as np
 
 
 class Algorithm:
-	def __init__(self, name):
+	def __init__(self, name, alg_name, cc_name):
+		self.alg_name = alg_name
+		self.cc_name = cc_name
 		self.name = name
 		self.list_percentage_of_common_triples = []
 		self.list_percentage_of_failed_recognitions = []
@@ -95,6 +98,17 @@ class Algorithm:
 			return False
 
 
+def clockwise_circular(cc):
+	if cc[0] == False and cc[1] == False:
+		return 'non-circular/non-clockwise'
+	elif cc[0] == True and cc[1] == False:
+		return 'circular/non-clockwise'
+	elif cc[0] == False and cc[1] == True:
+		return 'non-circular/clockwise'
+	elif cc[0] == True and cc[1] == True:
+		return 'circular/clockwise'
+
+
 algorithm_list = []
 
 directory = os.path.join('benchmark')
@@ -119,80 +133,625 @@ for file in os.listdir(directory):
 			absolute_processing_time = data["Absolute processing time"]
 			average_recognition_time = data["Average recognition time"]
 			
-			name = data['Algorithm']
+			name = data['Algorithm'] + str(clockwise_circular(cc))
+			alg_name = data['Algorithm']
+			cc_name = clockwise_circular(cc)
 			
-			already_in_list = False
-			for algorithm in algorithm_list:
-				if algorithm.compare_name(name) == True:
-					algorithm.add_percentage_of_failed_recognitions_(percentage_of_failed_recognitions)
-					algorithm.add_percentage_of_classified_R_Maps(percentage_of_classified_R_Maps)
-					algorithm.add_percentage_of_common_triples(percentage_of_common_triples)
-					algorithm.add_amount_of_path_distribution(amount_of_path_distribution)
-					algorithm.add_percentage_four_leaf_matching(percentage_four_leaf_matching)
-					algorithm.add_average_random_green_path_four_leaf_matching(
-						average_random_green_path_four_leaf_matching)
-					algorithm.add_dataset_size(dataset_size)
-					algorithm.add_cc(cc)
-					algorithm.add_cooptimal_solutions(cooptimal_solutions)
-					algorithm.add_absolute_processing_time(absolute_processing_time)
-					algorithm.add_average_recognition_time(average_recognition_time)
-					
-					already_in_list = True
+			algorithm = Algorithm(name, alg_name, cc_name)
+			algorithm.add_percentage_of_failed_recognitions_(percentage_of_failed_recognitions)
+			algorithm.add_percentage_of_classified_R_Maps(percentage_of_classified_R_Maps)
+			algorithm.add_percentage_of_common_triples(percentage_of_common_triples)
+			algorithm.add_amount_of_path_distribution(amount_of_path_distribution)
+			algorithm.add_percentage_four_leaf_matching(percentage_four_leaf_matching)
+			algorithm.add_average_random_green_path_four_leaf_matching(
+				average_random_green_path_four_leaf_matching)
+			algorithm.add_dataset_size(dataset_size)
+			algorithm.add_cc(cc)
+			algorithm.add_cooptimal_solutions(cooptimal_solutions)
+			algorithm.add_absolute_processing_time(absolute_processing_time)
+			algorithm.add_average_recognition_time(average_recognition_time)
 			
-			if already_in_list == False:
-				algorithm = Algorithm(name)
-				algorithm_list.append(algorithm)
-				algorithm.add_percentage_of_failed_recognitions_(percentage_of_failed_recognitions)
-				algorithm.add_percentage_of_classified_R_Maps(percentage_of_classified_R_Maps)
-				algorithm.add_percentage_of_common_triples(percentage_of_common_triples)
-				algorithm.add_amount_of_path_distribution(amount_of_path_distribution)
-				algorithm.add_percentage_four_leaf_matching(percentage_four_leaf_matching)
-				algorithm.add_average_random_green_path_four_leaf_matching(average_random_green_path_four_leaf_matching)
-				algorithm.add_dataset_size(dataset_size)
-				algorithm.add_cc(cc)
-				algorithm.add_cooptimal_solutions(cooptimal_solutions)
-				algorithm.add_absolute_processing_time(absolute_processing_time)
-				algorithm.add_average_recognition_time(average_recognition_time)
+			algorithm_list.append(algorithm)
+			
 		
 		except yaml.YAMLError as exc:
 			print(exc)
 
 
-def clockwise_circular(cc):
-	if cc[0] == False & cc[1] == False:
-		return 'non-circular/non-clockwise'
-	elif cc[0] == True & cc[1] == False:
-		return 'circular/non-clockwise'
-	elif cc[0] == False & cc[1] == True:
-		return 'non-circular/clockwise'
-	elif cc[0] == True & cc[1] == True:
-		return 'circular/clockwise'
 
 
-#plt.style.use('ggplot')
-#n = 5
-#milan= (73, 43, 44, 70, 61)
-#inter = (54, 59, 69, 46, 58)
-#fig, ax = plt.subplots()
-#index = np.arange(n)
-#bar_width = 0.35
-#opacity = 0.9
-#ax.bar(index, milan, bar_width, alpha=opacity, color='r',
-#                label='Milan')
-#ax.bar(index+bar_width, inter, bar_width, alpha=opacity, color='b',
-#                label='Inter')
-#ax.set_xlabel('Seasons')
-#ax.set_ylabel('Points')
-#ax.set_title('Milan v/s Inter')
-#ax.set_xticks(index + bar_width / 2)
-#ax.set_xticklabels(('1995-96','1996-97','1997-98','1998-99','1999-00'
-#    ))
-#ax.legend()
-#plt.show()
+plt.style.use('ggplot')
+
 
 # Algorithm List
-a = ('Base', 'Realistic-3', 'Realistic-4', 'Reserve-3', 'Reserve-4', 'Spike')
+a = ('base', 'realistic-3', 'realistic-4', 'reserve-3', 'reserve-4', 'spike')
+b = ('c cl', 'nc cl', 'c cl', 'nc ncl')
 
+ccl = []
+nccl = []
+cncl = []
+ncncl = []
+
+asdasd = ['non-circular/non-clockwise',  'circular/non-clockwise',  'non-circular/clockwise', 'circular/clockwise']
+
+base_liste = []
+realistic_3_liste = []
+realistic_4_liste = []
+reserve_3_liste = []
+reserve_4_liste = []
+spike_liste = []
+
+#base
+for algorithm in algorithm_list:
+	if algorithm.alg_name == 'base':
+		base_liste.append(algorithm)
+		
+for algorithm in base_liste:
+	if algorithm.cc_name == 'circular/clockwise':
+		ccl.append(algorithm.list_average_recognition_time[0])
+		
+	if algorithm.cc_name ==  'non-circular/clockwise':
+		nccl.append(algorithm.list_average_recognition_time[0])
+		
+	if algorithm.cc_name == 'circular/non-clockwise':
+		cncl.append(algorithm.list_average_recognition_time[0])
+		
+	if algorithm.cc_name ==  'non-circular/non-clockwise':
+		ncncl.append(algorithm.list_average_recognition_time[0])
+
+# realistic-3
+for algorithm in algorithm_list:
+	if algorithm.alg_name == 'realistic-3':
+		realistic_3_liste.append(algorithm)
+
+for algorithm in realistic_3_liste:
+	if algorithm.cc_name == 'circular/clockwise':
+		ccl.append(algorithm.list_average_recognition_time[0])
+	
+	if algorithm.cc_name == 'non-circular/clockwise':
+		nccl.append(algorithm.list_average_recognition_time[0])
+	
+	if algorithm.cc_name == 'circular/non-clockwise':
+		cncl.append(algorithm.list_average_recognition_time[0])
+	
+	if algorithm.cc_name == 'non-circular/non-clockwise':
+		ncncl.append(algorithm.list_average_recognition_time[0])
+
+#realistic-4
+for algorithm in algorithm_list:
+	if algorithm.alg_name == 'realistic-4':
+		realistic_4_liste.append(algorithm)
+
+for algorithm in base_liste:
+	if algorithm.cc_name == 'circular/clockwise':
+		ccl.append(algorithm.list_average_recognition_time[0])
+	
+	if algorithm.cc_name == 'non-circular/clockwise':
+		nccl.append(algorithm.list_average_recognition_time[0])
+	
+	if algorithm.cc_name == 'circular/non-clockwise':
+		cncl.append(algorithm.list_average_recognition_time[0])
+	
+	if algorithm.cc_name == 'non-circular/non-clockwise':
+		ncncl.append(algorithm.list_average_recognition_time[0])
+
+# reserve-3
+for algorithm in algorithm_list:
+	if algorithm.alg_name == 'reserve-3':
+		reserve_3_liste.append(algorithm)
+
+for algorithm in reserve_3_liste:
+	if algorithm.cc_name == 'circular/clockwise':
+		ccl.append(algorithm.list_average_recognition_time[0])
+	
+	if algorithm.cc_name == 'non-circular/clockwise':
+		nccl.append(algorithm.list_average_recognition_time[0])
+	
+	if algorithm.cc_name == 'circular/non-clockwise':
+		cncl.append(algorithm.list_average_recognition_time[0])
+	
+	if algorithm.cc_name == 'non-circular/non-clockwise':
+		ncncl.append(algorithm.list_average_recognition_time[0])
+
+# realistic-4
+for algorithm in algorithm_list:
+	if algorithm.alg_name == 'reserve-4':
+		reserve_4_liste.append(algorithm)
+
+for algorithm in reserve_4_liste:
+	if algorithm.cc_name == 'circular/clockwise':
+		ccl.append(algorithm.list_average_recognition_time[0])
+	
+	if algorithm.cc_name == 'non-circular/clockwise':
+		nccl.append(algorithm.list_average_recognition_time[0])
+	
+	if algorithm.cc_name == 'circular/non-clockwise':
+		cncl.append(algorithm.list_average_recognition_time[0])
+	
+	if algorithm.cc_name == 'non-circular/non-clockwise':
+		ncncl.append(algorithm.list_average_recognition_time[0])
+
+# spike
+for algorithm in algorithm_list:
+	if algorithm.alg_name == 'spike':
+		spike_liste.append(algorithm)
+
+for algorithm in spike_liste:
+	if algorithm.cc_name == 'circular/clockwise':
+		ccl.append(algorithm.list_average_recognition_time[0])
+	
+	if algorithm.cc_name == 'non-circular/clockwise':
+		nccl.append(algorithm.list_average_recognition_time[0])
+	
+	if algorithm.cc_name == 'circular/non-clockwise':
+		cncl.append(algorithm.list_average_recognition_time[0])
+	
+	if algorithm.cc_name == 'non-circular/non-clockwise':
+		ncncl.append(algorithm.list_average_recognition_time[0])
+
+fig, ax = plt.subplots()
+index = np.arange(6)
+bar_width = 0.2
+opacity = 1
+ax.bar(index, ccl, bar_width, alpha=opacity, color='darkblue',
+                label='ccl')
+ax.bar(index+bar_width, nccl, bar_width, alpha=opacity, color='red',
+                label='nccl')
+ax.bar(index + 2*bar_width, cncl, bar_width, alpha=opacity, color='seagreen',
+                label='cncl')
+ax.bar(index+3*bar_width, ncncl, bar_width, alpha=opacity, color='orange',
+                label='ncncl')
+
+ax.set_xlabel('')
+ax.set_ylabel('recognition time [s]')
+ax.set_title('Recognition time')
+ax.set_xticks(index + bar_width / 4)
+ax.set_xticklabels(a)
+ax.legend(ncol=4)
+plt.show()
+
+#############################################################
+# COOPTIMAL  SOLUTIONS
+
+base_liste = []
+realistic_3_liste = []
+realistic_4_liste = []
+reserve_3_liste = []
+reserve_4_liste = []
+spike_liste = []
+ccl = []
+nccl = []
+cncl = []
+ncncl = []
+
+asdasd = ['non-circular/non-clockwise', 'circular/non-clockwise', 'non-circular/clockwise', 'circular/clockwise']
+
+# base
+for algorithm in algorithm_list:
+	if algorithm.alg_name == 'base':
+		base_liste.append(algorithm)
+
+for algorithm in base_liste:
+	if algorithm.cc_name == 'circular/clockwise':
+		ccl.append(algorithm.list_cooptimal_solutions[0])
+	
+	if algorithm.cc_name == 'non-circular/clockwise':
+		nccl.append(algorithm.list_cooptimal_solutions[0])
+	
+	if algorithm.cc_name == 'circular/non-clockwise':
+		cncl.append(algorithm.list_cooptimal_solutions[0])
+	
+	if algorithm.cc_name == 'non-circular/non-clockwise':
+		ncncl.append(algorithm.list_cooptimal_solutions[0])
+
+# realistic-3
+for algorithm in algorithm_list:
+	if algorithm.alg_name == 'realistic-3':
+		base_liste.append(algorithm)
+
+for algorithm in realistic_3_liste:
+	if algorithm.cc_name == 'circular/clockwise':
+		ccl.append(algorithm.list_cooptimal_solutions[0])
+	
+	if algorithm.cc_name == 'non-circular/clockwise':
+		nccl.append(algorithm.list_cooptimal_solutions[0])
+	
+	if algorithm.cc_name == 'circular/non-clockwise':
+		cncl.append(algorithm.list_cooptimal_solutions[0])
+	
+	if algorithm.cc_name == 'non-circular/non-clockwise':
+		ncncl.append(algorithm.list_cooptimal_solutions[0])
+
+# realistic-4
+for algorithm in algorithm_list:
+	if algorithm.alg_name == 'realistic-4':
+		realistic_4_liste.append(algorithm)
+
+for algorithm in base_liste:
+	if algorithm.cc_name == 'circular/clockwise':
+		ccl.append(algorithm.list_cooptimal_solutions[0])
+	
+	if algorithm.cc_name == 'non-circular/clockwise':
+		nccl.append(algorithm.list_cooptimal_solutions[0])
+	
+	if algorithm.cc_name == 'circular/non-clockwise':
+		cncl.append(algorithm.list_cooptimal_solutions[0])
+	
+	if algorithm.cc_name == 'non-circular/non-clockwise':
+		ncncl.append(algorithm.list_cooptimal_solutions[0])
+
+# reserve-3
+for algorithm in algorithm_list:
+	if algorithm.alg_name == 'reserve-3':
+		reserve_3_liste.append(algorithm)
+
+for algorithm in reserve_3_liste:
+	if algorithm.cc_name == 'circular/clockwise':
+		ccl.append(algorithm.list_cooptimal_solutions[0])
+	
+	if algorithm.cc_name == 'non-circular/clockwise':
+		nccl.append(algorithm.list_cooptimal_solutions[0])
+	
+	if algorithm.cc_name == 'circular/non-clockwise':
+		cncl.append(algorithm.list_cooptimal_solutions[0])
+	
+	if algorithm.cc_name == 'non-circular/non-clockwise':
+		ncncl.append(algorithm.list_cooptimal_solutions[0])
+
+# realistic-4
+for algorithm in algorithm_list:
+	if algorithm.alg_name == 'reserve-4':
+		reserve_4_liste.append(algorithm)
+
+for algorithm in reserve_4_liste:
+	if algorithm.cc_name == 'circular/clockwise':
+		ccl.append(algorithm.list_cooptimal_solutions[0])
+	
+	if algorithm.cc_name == 'non-circular/clockwise':
+		nccl.append(algorithm.list_cooptimal_solutions[0])
+	
+	if algorithm.cc_name == 'circular/non-clockwise':
+		cncl.append(algorithm.list_cooptimal_solutions[0])
+	
+	if algorithm.cc_name == 'non-circular/non-clockwise':
+		ncncl.append(algorithm.list_cooptimal_solutions[0])
+
+# spike
+for algorithm in algorithm_list:
+	if algorithm.alg_name == 'spike':
+		spike_liste.append(algorithm)
+
+for algorithm in spike_liste:
+	if algorithm.cc_name == 'circular/clockwise':
+		ccl.append(algorithm.list_cooptimal_solutions[0])
+	
+	if algorithm.cc_name == 'non-circular/clockwise':
+		nccl.append(algorithm.list_cooptimal_solutions[0])
+	
+	if algorithm.cc_name == 'circular/non-clockwise':
+		cncl.append(algorithm.list_cooptimal_solutions[0])
+	
+	if algorithm.cc_name == 'non-circular/non-clockwise':
+		ncncl.append(algorithm.list_cooptimal_solutions[0])
+
+fig, ax = plt.subplots()
+index = np.arange(6)
+bar_width = 0.2
+opacity = 1
+ax.bar(index, ccl, bar_width, alpha=opacity, color='darkblue',
+       label='ccl')
+ax.bar(index + bar_width, nccl, bar_width, alpha=opacity, color='red',
+       label='nccl')
+ax.bar(index + 2 * bar_width, cncl, bar_width, alpha=opacity, color='seagreen',
+       label='cncl')
+ax.bar(index + 3 * bar_width, ncncl, bar_width, alpha=opacity, color='orange',
+       label='ncncl')
+
+
+ax.set_xlabel('')
+ax.set_ylabel('Average co-optimal solutions')
+ax.set_title('Co-optimal solutions')
+ax.set_xticks(index + bar_width / 4)
+ax.set_xticklabels(a)
+ax.legend(ncol=4)
+plt.show()
+
+
+################################################
+
+#############################################################
+# PERCENTAGE FOUR LEAVES MATCHING
+
+base_liste = []
+realistic_3_liste = []
+realistic_4_liste = []
+reserve_3_liste = []
+reserve_4_liste = []
+spike_liste = []
+ccl = []
+nccl = []
+cncl = []
+ncncl = []
+
+asdasd = ['non-circular/non-clockwise', 'circular/non-clockwise', 'non-circular/clockwise', 'circular/clockwise']
+
+# base
+for algorithm in algorithm_list:
+	if algorithm.alg_name == 'base':
+		base_liste.append(algorithm)
+
+for algorithm in base_liste:
+	if algorithm.cc_name == 'circular/clockwise':
+		ccl.append(algorithm.list_percentage_four_leaf_matching[0])
+	
+	if algorithm.cc_name == 'non-circular/clockwise':
+		nccl.append(algorithm.list_percentage_four_leaf_matching[0])
+	
+	if algorithm.cc_name == 'circular/non-clockwise':
+		cncl.append(algorithm.list_percentage_four_leaf_matching[0])
+	
+	if algorithm.cc_name == 'non-circular/non-clockwise':
+		ncncl.append(algorithm.list_percentage_four_leaf_matching[0])
+
+# realistic-3
+for algorithm in algorithm_list:
+	if algorithm.alg_name == 'realistic-3':
+		base_liste.append(algorithm)
+
+for algorithm in realistic_3_liste:
+	if algorithm.cc_name == 'circular/clockwise':
+		ccl.append(algorithm.list_percentage_four_leaf_matching[0])
+	
+	if algorithm.cc_name == 'non-circular/clockwise':
+		nccl.append(algorithm.list_percentage_four_leaf_matching[0])
+	
+	if algorithm.cc_name == 'circular/non-clockwise':
+		cncl.append(algorithm.list_percentage_four_leaf_matching[0])
+	
+	if algorithm.cc_name == 'non-circular/non-clockwise':
+		ncncl.append(algorithm.list_percentage_four_leaf_matching[0])
+
+# realistic-4
+for algorithm in algorithm_list:
+	if algorithm.alg_name == 'realistic-4':
+		realistic_4_liste.append(algorithm)
+
+for algorithm in base_liste:
+	if algorithm.cc_name == 'circular/clockwise':
+		ccl.append(algorithm.list_percentage_four_leaf_matching[0])
+	
+	if algorithm.cc_name == 'non-circular/clockwise':
+		nccl.append(algorithm.list_percentage_four_leaf_matching[0])
+	
+	if algorithm.cc_name == 'circular/non-clockwise':
+		cncl.append(algorithm.list_percentage_four_leaf_matching[0])
+	
+	if algorithm.cc_name == 'non-circular/non-clockwise':
+		ncncl.append(algorithm.list_percentage_four_leaf_matching[0])
+
+# reserve-3
+for algorithm in algorithm_list:
+	if algorithm.alg_name == 'reserve-3':
+		reserve_3_liste.append(algorithm)
+
+for algorithm in reserve_3_liste:
+	if algorithm.cc_name == 'circular/clockwise':
+		ccl.append(algorithm.list_percentage_four_leaf_matching[0])
+	
+	if algorithm.cc_name == 'non-circular/clockwise':
+		nccl.append(algorithm.list_percentage_four_leaf_matching[0])
+	
+	if algorithm.cc_name == 'circular/non-clockwise':
+		cncl.append(algorithm.list_percentage_four_leaf_matching[0])
+	
+	if algorithm.cc_name == 'non-circular/non-clockwise':
+		ncncl.append(algorithm.list_percentage_four_leaf_matching[0])
+
+# realistic-4
+for algorithm in algorithm_list:
+	if algorithm.alg_name == 'reserve-4':
+		reserve_4_liste.append(algorithm)
+
+for algorithm in reserve_4_liste:
+	if algorithm.cc_name == 'circular/clockwise':
+		ccl.append(algorithm.list_percentage_four_leaf_matching[0])
+	
+	if algorithm.cc_name == 'non-circular/clockwise':
+		nccl.append(algorithm.list_percentage_four_leaf_matching[0])
+	
+	if algorithm.cc_name == 'circular/non-clockwise':
+		cncl.append(algorithm.list_percentage_four_leaf_matching[0])
+	
+	if algorithm.cc_name == 'non-circular/non-clockwise':
+		ncncl.append(algorithm.list_percentage_four_leaf_matching[0])
+
+# spike
+for algorithm in algorithm_list:
+	if algorithm.alg_name == 'spike':
+		spike_liste.append(algorithm)
+
+for algorithm in spike_liste:
+	if algorithm.cc_name == 'circular/clockwise':
+		ccl.append(algorithm.list_percentage_four_leaf_matching[0])
+	
+	if algorithm.cc_name == 'non-circular/clockwise':
+		nccl.append(algorithm.list_percentage_four_leaf_matching[0])
+	
+	if algorithm.cc_name == 'circular/non-clockwise':
+		cncl.append(algorithm.list_percentage_four_leaf_matching[0])
+	
+	if algorithm.cc_name == 'non-circular/non-clockwise':
+		ncncl.append(algorithm.list_percentage_four_leaf_matching[0])
+
+fig, ax = plt.subplots()
+index = np.arange(6)
+bar_width = 0.2
+opacity = 1
+ax.bar(index, ccl, bar_width, alpha=opacity, color='darkblue',
+       label='ccl')
+ax.bar(index + bar_width, nccl, bar_width, alpha=opacity, color='red',
+       label='nccl')
+ax.bar(index + 2 * bar_width, cncl, bar_width, alpha=opacity, color='seagreen',
+       label='cncl')
+ax.bar(index + 3 * bar_width, ncncl, bar_width, alpha=opacity, color='orange',
+       label='ncncl')
+
+ax.yaxis.set_major_formatter(StrMethodFormatter('{x:,.0f}'))
+ax.set_xlabel('')
+ax.set_ylabel('Percentage of 4 leafs matching')
+ax.set_title('4 leafs matching')
+ax.set_xticks(index + bar_width / 4)
+ax.set_xticklabels(a)
+ax.legend(ncol=4)
+plt.show()
+
+#############################################################
+# PERCENTAGE OF COMMON TRIPLES
+
+base_liste = []
+realistic_3_liste = []
+realistic_4_liste = []
+reserve_3_liste = []
+reserve_4_liste = []
+spike_liste = []
+ccl = []
+nccl = []
+cncl = []
+ncncl = []
+
+asdasd = ['non-circular/non-clockwise', 'circular/non-clockwise', 'non-circular/clockwise', 'circular/clockwise']
+
+# base
+for algorithm in algorithm_list:
+	if algorithm.alg_name == 'base':
+		base_liste.append(algorithm)
+
+for algorithm in base_liste:
+	if algorithm.cc_name == 'circular/clockwise':
+		ccl.append(algorithm.list_percentage_of_common_triples[0])
+	
+	if algorithm.cc_name == 'non-circular/clockwise':
+		nccl.append(algorithm.list_percentage_of_common_triples[0])
+	
+	if algorithm.cc_name == 'circular/non-clockwise':
+		cncl.append(algorithm.list_percentage_of_common_triples[0])
+	
+	if algorithm.cc_name == 'non-circular/non-clockwise':
+		ncncl.append(algorithm.list_percentage_of_common_triples[0])
+
+# realistic-3
+for algorithm in algorithm_list:
+	if algorithm.alg_name == 'realistic-3':
+		base_liste.append(algorithm)
+
+for algorithm in realistic_3_liste:
+	if algorithm.cc_name == 'circular/clockwise':
+		ccl.append(algorithm.list_percentage_of_common_triples[0])
+	
+	if algorithm.cc_name == 'non-circular/clockwise':
+		nccl.append(algorithm.list_percentage_of_common_triples[0])
+	
+	if algorithm.cc_name == 'circular/non-clockwise':
+		cncl.append(algorithm.list_percentage_of_common_triples[0])
+	
+	if algorithm.cc_name == 'non-circular/non-clockwise':
+		ncncl.append(algorithm.list_percentage_of_common_triples[0])
+
+# realistic-4
+for algorithm in algorithm_list:
+	if algorithm.alg_name == 'realistic-4':
+		realistic_4_liste.append(algorithm)
+
+for algorithm in base_liste:
+	if algorithm.cc_name == 'circular/clockwise':
+		ccl.append(algorithm.list_percentage_of_common_triples[0])
+	
+	if algorithm.cc_name == 'non-circular/clockwise':
+		nccl.append(algorithm.list_percentage_of_common_triples[0])
+	
+	if algorithm.cc_name == 'circular/non-clockwise':
+		cncl.append(algorithm.list_percentage_of_common_triples[0])
+	
+	if algorithm.cc_name == 'non-circular/non-clockwise':
+		ncncl.append(algorithm.list_percentage_of_common_triples[0])
+
+# reserve-3
+for algorithm in algorithm_list:
+	if algorithm.alg_name == 'reserve-3':
+		reserve_3_liste.append(algorithm)
+
+for algorithm in reserve_3_liste:
+	if algorithm.cc_name == 'circular/clockwise':
+		ccl.append(algorithm.list_percentage_of_common_triples[0])
+	
+	if algorithm.cc_name == 'non-circular/clockwise':
+		nccl.append(algorithm.list_percentage_of_common_triples[0])
+	
+	if algorithm.cc_name == 'circular/non-clockwise':
+		cncl.append(algorithm.list_percentage_of_common_triples[0])
+	
+	if algorithm.cc_name == 'non-circular/non-clockwise':
+		ncncl.append(algorithm.list_percentage_of_common_triples[0])
+
+# realistic-4
+for algorithm in algorithm_list:
+	if algorithm.alg_name == 'reserve-4':
+		reserve_4_liste.append(algorithm)
+
+for algorithm in reserve_4_liste:
+	if algorithm.cc_name == 'circular/clockwise':
+		ccl.append(algorithm.list_percentage_of_common_triples[0])
+	
+	if algorithm.cc_name == 'non-circular/clockwise':
+		nccl.append(algorithm.list_percentage_of_common_triples[0])
+	
+	if algorithm.cc_name == 'circular/non-clockwise':
+		cncl.append(algorithm.list_percentage_of_common_triples[0])
+	
+	if algorithm.cc_name == 'non-circular/non-clockwise':
+		ncncl.append(algorithm.list_percentage_of_common_triples[0])
+
+# spike
+for algorithm in algorithm_list:
+	if algorithm.alg_name == 'spike':
+		spike_liste.append(algorithm)
+
+for algorithm in spike_liste:
+	if algorithm.cc_name == 'circular/clockwise':
+		ccl.append(algorithm.list_percentage_of_common_triples[0])
+	
+	if algorithm.cc_name == 'non-circular/clockwise':
+		nccl.append(algorithm.list_percentage_of_common_triples[0])
+	
+	if algorithm.cc_name == 'circular/non-clockwise':
+		cncl.append(algorithm.list_percentage_of_common_triples[0])
+	
+	if algorithm.cc_name == 'non-circular/non-clockwise':
+		ncncl.append(algorithm.list_percentage_of_common_triples[0])
+
+fig, ax = plt.subplots()
+index = np.arange(6)
+bar_width = 0.2
+opacity = 1
+ax.bar(index, ccl, bar_width, alpha=opacity, color='darkblue',
+       label='ccl')
+ax.bar(index + bar_width, nccl, bar_width, alpha=opacity, color='red',
+       label='nccl')
+ax.bar(index + 2 * bar_width, cncl, bar_width, alpha=opacity, color='seagreen',
+       label='cncl')
+ax.bar(index + 3 * bar_width, ncncl, bar_width, alpha=opacity, color='orange',
+       label='ncncl')
+
+ax.yaxis.set_major_formatter(StrMethodFormatter('{x:,.0f}'))
+ax.set_xlabel('')
+ax.set_ylabel('Percentage of common triples')
+ax.set_title('Common triples')
+ax.set_xticks(index + bar_width / 4)
+ax.set_xticklabels(a)
+ax.legend(ncol=4)
+plt.show()
+
+"""
 # plot processing time
 y_pos = np.arange(len(a))
 value = []
@@ -260,3 +819,4 @@ plt.show()
 # plt.savefig(os.path.join(
 #	config["result_folder"], "plots", folder, f'{folder}_{case_type.value}_plot.png'))
 # plt.clf()
+"""
