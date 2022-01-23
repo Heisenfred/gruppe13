@@ -3,6 +3,7 @@ import os
 import matplotlib.pyplot as plt
 import numpy as np
 
+
 class Algorithm:
 	def __init__(self, name):
 		self.name = name
@@ -18,7 +19,7 @@ class Algorithm:
 		self.list_cooptimal_solutions = []
 		self.list_absolute_processing_time = []
 		self.list_average_recognition_time = []
-		
+	
 	def absolut_processing_time(self):
 		return sum(self.list_absolute_processing_time)
 	
@@ -29,11 +30,11 @@ class Algorithm:
 			fl = x[:-2]
 			float_fl = float(fl)
 			c.append(float_fl)
-
-		return sum(c)/len(c)
+		
+		return sum(c) / len(c)
 	
 	def cooptimal_solutions(self):
-		return sum(self.list_cooptimal_solutions)/len(self.list_cooptimal_solutions)
+		return sum(self.list_cooptimal_solutions) / len(self.list_cooptimal_solutions)
 	
 	def percentage_of_failed_recognition(self):
 		c = []
@@ -54,9 +55,7 @@ class Algorithm:
 			c.append(float_fl)
 		
 		return sum(c) / len(c)
-		
-		
-		
+	
 	def add_percentage_of_common_triples(self, percetage_of_common_triples):
 		self.list_percentage_of_common_triples.append(percetage_of_common_triples)
 	
@@ -80,13 +79,13 @@ class Algorithm:
 	
 	def add_generate_circular(self, generate_circular):
 		self.list_generate_circular.append(generate_circular)
-		
+	
 	def add_generate_clockwise(self, generate_clockwise):
 		self.list_generate_clockwise.append(generate_clockwise)
-		
+	
 	def add_cooptimal_solutions(self, cooptimal_solutions):
 		self.list_cooptimal_solutions.append(cooptimal_solutions)
-		
+	
 	def add_absolute_processing_time(self, absolute_processing_time):
 		self.list_absolute_processing_time.append(absolute_processing_time)
 	
@@ -98,9 +97,7 @@ class Algorithm:
 			return True
 		else:
 			return False
-		
-		
-	
+
 
 algorithm_list = []
 
@@ -137,7 +134,8 @@ for file in os.listdir(directory):
 					algorithm.add_percentage_of_common_triples(percentage_of_common_triples)
 					algorithm.add_amount_of_path_distribution(amount_of_path_distribution)
 					algorithm.add_percentage_four_leaf_matching(percentage_four_leaf_matching)
-					algorithm.add_average_random_green_path_four_leaf_matching(average_random_green_path_four_leaf_matching)
+					algorithm.add_average_random_green_path_four_leaf_matching(
+						average_random_green_path_four_leaf_matching)
 					algorithm.add_dataset_size(dataset_size)
 					algorithm.add_generate_circular(generate_circular)
 					algorithm.add_generate_clockwise(generate_clockwise)
@@ -146,7 +144,7 @@ for file in os.listdir(directory):
 					algorithm.add_average_recognition_time(average_recognition_time)
 					
 					already_in_list = True
-				
+			
 			if already_in_list == False:
 				algorithm = Algorithm(name)
 				algorithm_list.append(algorithm)
@@ -165,7 +163,6 @@ for file in os.listdir(directory):
 		
 		except yaml.YAMLError as exc:
 			print(exc)
-
 
 # Algorithm List
 a = ('Base', 'Realistic-3', 'Realistic-4', 'Reserve-3', 'Reserve-4', 'Spike')
@@ -189,7 +186,6 @@ error = np.random.rand(len(a))
 plt.bar(a, value)
 plt.ylabel("Avarage of cooptimal solutions")
 plt.show()
-
 
 # plot cooptimal solutions
 y_pos = np.arange(len(a))
@@ -221,20 +217,20 @@ plt.bar(a, value)
 plt.ylabel("Common triples [%]")
 plt.show()
 
-#for x in range(len(count_path)):
+# for x in range(len(count_path)):
 #	percentage = (count_path[x] / len(history_files)) * 100
 #	print("Percentage of trees found with {} path: {}%".format(x, percentage))
 #	paths_per_h_file_in_percent.append(percentage)
 #
-#ypos = np.arange(len(paths_per_h_file_in_percent))
-#plt.xlabel('Paths found')
-#plt.ylabel('Proportion of paths found in %')
-#plt.title('Paths found per dataset')
+# ypos = np.arange(len(paths_per_h_file_in_percent))
+# plt.xlabel('Paths found')
+# plt.ylabel('Proportion of paths found in %')
+# plt.title('Paths found per dataset')
 
-#ax = plt.gca()
-#ax.set_xlim([0, 10])
-#ax.set_ylim([0, 100])
-#plt.bar(ypos, paths_per_h_file_in_percent)
-#plt.savefig(os.path.join(
+# ax = plt.gca()
+# ax.set_xlim([0, 10])
+# ax.set_ylim([0, 100])
+# plt.bar(ypos, paths_per_h_file_in_percent)
+# plt.savefig(os.path.join(
 #	config["result_folder"], "plots", folder, f'{folder}_{case_type.value}_plot.png'))
-#plt.clf()
+# plt.clf()
