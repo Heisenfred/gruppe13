@@ -14,16 +14,15 @@ class Algorithm:
 		self.list_percentage_four_leaf_matching = []
 		self.list_average_random_green_path_four_leaf_matching = []
 		self.list_dataset_size = []
-		self.list_generate_circular = []
-		self.list_generate_clockwise = []
+		self.list_cc = []
 		self.list_cooptimal_solutions = []
 		self.list_absolute_processing_time = []
 		self.list_average_recognition_time = []
 	
-	def absolut_processing_time(self):
+	def average_absolut_processing_time(self):
 		return sum(self.list_absolute_processing_time)
 	
-	def percentage_of_four_leaf_matching(self):
+	def average_percentage_of_four_leaf_matching(self):
 		c = []
 		for x in self.list_percentage_four_leaf_matching:
 			print(x)
@@ -33,10 +32,10 @@ class Algorithm:
 		
 		return sum(c) / len(c)
 	
-	def cooptimal_solutions(self):
+	def average_cooptimal_solutions(self):
 		return sum(self.list_cooptimal_solutions) / len(self.list_cooptimal_solutions)
 	
-	def percentage_of_failed_recognition(self):
+	def average_percentage_of_failed_recognition(self):
 		c = []
 		for x in self.list_percentage_of_failed_recognitions:
 			print(x)
@@ -77,11 +76,8 @@ class Algorithm:
 	def add_dataset_size(self, dataset_size):
 		self.list_dataset_size.append(dataset_size)
 	
-	def add_generate_circular(self, generate_circular):
-		self.list_generate_circular.append(generate_circular)
-	
-	def add_generate_clockwise(self, generate_clockwise):
-		self.list_generate_clockwise.append(generate_clockwise)
+	def add_cc(self, cc):
+		self.list_cc.append(cc)
 	
 	def add_cooptimal_solutions(self, cooptimal_solutions):
 		self.list_cooptimal_solutions.append(cooptimal_solutions)
@@ -118,8 +114,7 @@ for file in os.listdir(directory):
 			percentage_four_leaf_matching = data["Percentage 4 leaf matching"]
 			average_random_green_path_four_leaf_matching = data["Average random green path 4 leaf matching"]
 			dataset_size = data["Dataset size"]
-			generate_circular = data["Generate circular"]
-			generate_clockwise = data["Generate clockwise"]
+			cc = (data["Generate clockwise"], data["Generate circular"])
 			cooptimal_solutions = data["Co-optimal solutions average"]
 			absolute_processing_time = data["Absolute processing time"]
 			average_recognition_time = data["Average recognition time"]
@@ -137,8 +132,7 @@ for file in os.listdir(directory):
 					algorithm.add_average_random_green_path_four_leaf_matching(
 						average_random_green_path_four_leaf_matching)
 					algorithm.add_dataset_size(dataset_size)
-					algorithm.add_generate_circular(generate_circular)
-					algorithm.add_generate_clockwise(generate_clockwise)
+					algorithm.add_cc(cc)
 					algorithm.add_cooptimal_solutions(cooptimal_solutions)
 					algorithm.add_absolute_processing_time(absolute_processing_time)
 					algorithm.add_average_recognition_time(average_recognition_time)
@@ -155,14 +149,46 @@ for file in os.listdir(directory):
 				algorithm.add_percentage_four_leaf_matching(percentage_four_leaf_matching)
 				algorithm.add_average_random_green_path_four_leaf_matching(average_random_green_path_four_leaf_matching)
 				algorithm.add_dataset_size(dataset_size)
-				algorithm.add_generate_circular(generate_circular)
-				algorithm.add_generate_clockwise(generate_clockwise)
+				algorithm.add_cc(cc)
 				algorithm.add_cooptimal_solutions(cooptimal_solutions)
 				algorithm.add_absolute_processing_time(absolute_processing_time)
 				algorithm.add_average_recognition_time(average_recognition_time)
 		
 		except yaml.YAMLError as exc:
 			print(exc)
+
+
+def clockwise_circular(cc):
+	if cc[0] == False & cc[1] == False:
+		return 'non-circular/non-clockwise'
+	elif cc[0] == True & cc[1] == False:
+		return 'circular/non-clockwise'
+	elif cc[0] == False & cc[1] == True:
+		return 'non-circular/clockwise'
+	elif cc[0] == True & cc[1] == True:
+		return 'circular/clockwise'
+
+
+#plt.style.use('ggplot')
+#n = 5
+#milan= (73, 43, 44, 70, 61)
+#inter = (54, 59, 69, 46, 58)
+#fig, ax = plt.subplots()
+#index = np.arange(n)
+#bar_width = 0.35
+#opacity = 0.9
+#ax.bar(index, milan, bar_width, alpha=opacity, color='r',
+#                label='Milan')
+#ax.bar(index+bar_width, inter, bar_width, alpha=opacity, color='b',
+#                label='Inter')
+#ax.set_xlabel('Seasons')
+#ax.set_ylabel('Points')
+#ax.set_title('Milan v/s Inter')
+#ax.set_xticks(index + bar_width / 2)
+#ax.set_xticklabels(('1995-96','1996-97','1997-98','1998-99','1999-00'
+#    ))
+#ax.legend()
+#plt.show()
 
 # Algorithm List
 a = ('Base', 'Realistic-3', 'Realistic-4', 'Reserve-3', 'Reserve-4', 'Spike')
@@ -171,7 +197,7 @@ a = ('Base', 'Realistic-3', 'Realistic-4', 'Reserve-3', 'Reserve-4', 'Spike')
 y_pos = np.arange(len(a))
 value = []
 for algorithm in algorithm_list:
-	value.append(algorithm.absolut_processing_time())
+	value.append(algorithm.average_absolut_processing_time())
 error = np.random.rand(len(a))
 plt.bar(a, value)
 plt.ylabel("Absolute processing time in s")
@@ -181,7 +207,7 @@ plt.show()
 y_pos = np.arange(len(a))
 value = []
 for algorithm in algorithm_list:
-	value.append(algorithm.cooptimal_solutions())
+	value.append(algorithm.average_cooptimal_solutions())
 error = np.random.rand(len(a))
 plt.bar(a, value)
 plt.ylabel("Avarage of cooptimal solutions")
@@ -191,7 +217,7 @@ plt.show()
 y_pos = np.arange(len(a))
 value = []
 for algorithm in algorithm_list:
-	value.append(algorithm.percentage_of_four_leaf_matching())
+	value.append(algorithm.average_percentage_of_four_leaf_matching())
 error = np.random.rand(len(a))
 plt.bar(a, value)
 plt.ylabel("Percentage of four leaf matching [%]")
@@ -201,7 +227,7 @@ plt.show()
 y_pos = np.arange(len(a))
 value = []
 for algorithm in algorithm_list:
-	value.append(algorithm.percentage_of_failed_recognition())
+	value.append(algorithm.average_percentage_of_failed_recognition())
 error = np.random.rand(len(a))
 plt.bar(a, value)
 plt.ylabel("failed recognition [%]")
