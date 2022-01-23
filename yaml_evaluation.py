@@ -22,14 +22,46 @@ class Algorithm:
 	def absolut_processing_time(self):
 		return sum(self.list_absolute_processing_time)
 	
+	def percentage_of_four_leaf_matching(self):
+		c = []
+		for x in self.list_percentage_four_leaf_matching:
+			print(x)
+			fl = x[:-2]
+			float_fl = float(fl)
+			c.append(float_fl)
+
+		return sum(c)/len(c)
+	
 	def cooptimal_solutions(self):
+		return sum(self.list_cooptimal_solutions)/len(self.list_cooptimal_solutions)
+	
+	def percentage_of_failed_recognition(self):
+		c = []
+		for x in self.list_percentage_of_failed_recognitions:
+			print(x)
+			fl = x[:-2]
+			float_fl = float(fl)
+			c.append(float_fl)
+		
+		return sum(c) / len(c)
+	
+	def percentage_of_common_triples(self):
+		c = []
+		for x in self.list_percentage_of_common_triples:
+			print(x)
+			fl = x[:-2]
+			float_fl = float(fl)
+			c.append(float_fl)
+		
+		return sum(c) / len(c)
+		
 		
 		
 	def add_percentage_of_common_triples(self, percetage_of_common_triples):
 		self.list_percentage_of_common_triples.append(percetage_of_common_triples)
 	
-	def add_percentage_of_failed_recognitions_(self, list_percentage_of_common_triples):
-		self.list_percentage_of_common_triples.append(list_percentage_of_common_triples)
+	def add_percentage_of_failed_recognitions_(self, list_percentage_of_failed_recognition):
+		self.list_percentage_of_failed_recognitions.append(list_percentage_of_failed_recognition)
 	
 	def add_percentage_of_classified_R_Maps(self, percentage_of_classified_R_Maps):
 		self.list_percentage_of_classified_R_Maps.append(percentage_of_classified_R_Maps)
@@ -133,8 +165,12 @@ for file in os.listdir(directory):
 		
 		except yaml.YAMLError as exc:
 			print(exc)
-			
+
+
+# Algorithm List
 a = ('Base', 'Realistic-3', 'Realistic-4', 'Reserve-3', 'Reserve-4', 'Spike')
+
+# plot processing time
 y_pos = np.arange(len(a))
 value = []
 for algorithm in algorithm_list:
@@ -144,7 +180,46 @@ plt.bar(a, value)
 plt.ylabel("Absolute processing time in s")
 plt.show()
 
+# plot cooptimal solutions
+y_pos = np.arange(len(a))
+value = []
+for algorithm in algorithm_list:
+	value.append(algorithm.cooptimal_solutions())
+error = np.random.rand(len(a))
+plt.bar(a, value)
+plt.ylabel("Avarage of cooptimal solutions")
+plt.show()
 
+
+# plot cooptimal solutions
+y_pos = np.arange(len(a))
+value = []
+for algorithm in algorithm_list:
+	value.append(algorithm.percentage_of_four_leaf_matching())
+error = np.random.rand(len(a))
+plt.bar(a, value)
+plt.ylabel("Percentage of four leaf matching [%]")
+plt.show()
+
+# failed recognition
+y_pos = np.arange(len(a))
+value = []
+for algorithm in algorithm_list:
+	value.append(algorithm.percentage_of_failed_recognition())
+error = np.random.rand(len(a))
+plt.bar(a, value)
+plt.ylabel("failed recognition [%]")
+plt.show()
+
+# common triples
+y_pos = np.arange(len(a))
+value = []
+for algorithm in algorithm_list:
+	value.append(algorithm.percentage_of_common_triples())
+error = np.random.rand(len(a))
+plt.bar(a, value)
+plt.ylabel("Common triples [%]")
+plt.show()
 
 #for x in range(len(count_path)):
 #	percentage = (count_path[x] / len(history_files)) * 100
