@@ -1,18 +1,19 @@
-Absolute processing time: 1620.4279289245605
+Absolute processing time: 447.7420587539673
 Algorithm: spike
 Amount of path distribution:
-  0: 6731
-  1: 2504
-  2: 905
+  0: 6671
+  1: 2479
+  2: 903
   3: 5710
-  5: 4150
-Average random green path 4 leaf matching: 0.2405
-Average recognition time: 0.08102139644622802
-Co-optimal solutions average: 1.6147
+  5: 4236
+  7: 1
+Average random green path 4 leaf matching: 0.2403
+Average recognition time: 0.022387102937698366
+Co-optimal solutions average: 1.63025
 Dataset size: 6
 Generate circular: false
 Generate clockwise: true
-Percentage 4 leaf matching: 24.172666666665236 %
-Percentage of classified R-Maps: 66.345 %
-Percentage of common triples: 46.8575%
-Percentage of failed recognitions: 33.655%
+Percentage 4 leaf matching: 24.081047619046174 %
+Percentage of classified R-Maps: 66.645 %
+Percentage of common triples: 46.98%
+Percentage of failed recognitions: 33.355000000000004%
