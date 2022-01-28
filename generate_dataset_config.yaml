@@ -16,7 +16,7 @@ default_circular: False
 default_clockwise: False
 
 # the amount of files of a configuration to be analysed
-default_size: 10
+default_size: 20000
 
 
 # TODO default_size has to be 20000 for the final analysis
