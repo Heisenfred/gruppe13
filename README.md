@@ -12,3 +12,18 @@ this will start the recognition process and will create .yaml results files in t
 
 #5 python yaml_evaluation.py 
 will take the yaml result files and plot them into evaluation graphs
+
+
+FOLDERS:
+
+/datasets 
+stores generated datasets from generate_datasets.py
+
+/archiv_failed_recognitions
+stores annotated and failed recognitions from our previous iterations
+
+/results/benchmark
+stores the result.yaml files that will be evaluated
+
+/results/example_recognition
+stores trees and failed recognitions
